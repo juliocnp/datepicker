@@ -24,7 +24,9 @@ export class DiasComponent implements OnInit {
   @Output() data1: EventEmitter<Date>;
   @Output() data2: EventEmitter<Date>;
 
-  constructor() { 
+  @Input() dataUnica: boolean = false;
+
+  constructor() {
     this.data1 = new EventEmitter<Date>();
     this.data2 = new EventEmitter<Date>();
   }
@@ -46,6 +48,7 @@ export class DiasComponent implements OnInit {
     this.ano = mesSelecionado.getFullYear();
     const diaAux = new Date(this.copyObject(mesSelecionado));
     diaAux.setDate(1);
+    diaAux.setHours(0, 0, 0, 0);
     const diaSemanaInicio = diaAux.getDay();
 
     for (let j = 0; j <= 5; j++) {
@@ -81,29 +84,68 @@ export class DiasComponent implements OnInit {
 
   diaClique(dia: DiaSemana) {
     if (!this.diaUnicoSelecionado && !this.dia1Selecionado) {
+      this.selecionarDia1(dia);
+    } else if (!this.dia2Selecionado && !this.dataUnica) {
+      this.selecionarDia1eDia2(dia);
+      this.PreencherPeriodo();
+    } else if (this.dataUnica && this.diaUnicoSelecionado) {
+      this.selecionarDataUnica(dia);
+    } else {
+      this.zerarDatas();
+      this.montarMes(this.mesAtual);
+    }
+  }
+
+  private selecionarDataUnica(dia: DiaSemana) {
+    if (this.diaUnicoSelecionado.valueOf() === dia.data.valueOf()) {
+      this.diaUnicoSelecionado = null;
+      this.data1.emit(null);
+      dia.selecionado = false;
+    }
+    else {
+      this.tirarSelecaoDosOutrosDias(dia);
       dia.selecionado = true;
       this.diaUnicoSelecionado = new Date(this.copyObject(dia.data));
       this.data1.emit(new Date(this.copyObject(this.diaUnicoSelecionado)));
-    } else if (!this.dia2Selecionado) {
-      dia.selecionado = true;
-      this.dia1Selecionado = new Date(this.copyObject(this.diaUnicoSelecionado));
-      this.dia2Selecionado = new Date(this.copyObject(dia.data));
-      this.diaUnicoSelecionado = null;
-      if (this.dia1Selecionado > this.dia2Selecionado) {
-        const diaSelecionadoAux = new Date(this.copyObject(this.dia2Selecionado));
-        this.dia2Selecionado = new Date(this.copyObject(this.dia1Selecionado));
-        this.dia1Selecionado = new Date(this.copyObject(diaSelecionadoAux));
-      }
-      this.data1.emit(new Date(this.copyObject(this.dia1Selecionado)));
-      this.data2.emit(new Date(this.copyObject(this.dia2Selecionado)));
-      this.PreencherPeriodo();
-    } else {
-      this.dia1Selecionado = null;
-      this.dia2Selecionado = null;
-      this.data1.emit(null);
-      this.data2.emit(null);
-      this.montarMes(this.mesAtual);
     }
+  }
+
+  private tirarSelecaoDosOutrosDias(dia: DiaSemana) {
+    this.dias.forEach(semana => {
+      semana.forEach(d => {
+        if (dia && d && dia.data.valueOf() !== d.data.valueOf()) {
+          d.selecionado = false;
+        }
+      });
+    });
+  }
+
+  private selecionarDia1eDia2(dia: DiaSemana) {
+    dia.selecionado = true;
+    this.dia1Selecionado = new Date(this.copyObject(this.diaUnicoSelecionado));
+    this.dia2Selecionado = new Date(this.copyObject(dia.data));
+    this.diaUnicoSelecionado = null;
+    if (this.dia1Selecionado > this.dia2Selecionado) {
+      const diaSelecionadoAux = new Date(this.copyObject(this.dia2Selecionado));
+      this.dia2Selecionado = new Date(this.copyObject(this.dia1Selecionado));
+      this.dia1Selecionado = new Date(this.copyObject(diaSelecionadoAux));
+    }
+    this.data1.emit(new Date(this.copyObject(this.dia1Selecionado)));
+    this.data2.emit(new Date(this.copyObject(this.dia2Selecionado)));
+  }
+
+  private selecionarDia1(dia: DiaSemana) {
+    dia.selecionado = true;
+    this.diaUnicoSelecionado = new Date(this.copyObject(dia.data));
+    this.data1.emit(new Date(this.copyObject(this.diaUnicoSelecionado)));
+  }
+
+  private zerarDatas() {
+    this.diaUnicoSelecionado = null;
+    this.dia1Selecionado = null;
+    this.dia2Selecionado = null;
+    this.data1.emit(null);
+    this.data2.emit(null);
   }
 
   private PreencherPeriodo() {
