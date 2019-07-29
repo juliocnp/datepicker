@@ -1,0 +1,160 @@
+.container {
+    font-family: Avenir;
+    font-weight: 300;
+    height: 100vh;
+    width: 100vw;
+    .datepicker {
+        height: 100%;
+        width: 100%;
+        color: #4A4A4A;
+        font-family: Arial;
+        font-size: 14px;
+        font-weight: 300;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: 2fr repeat(7, 1fr);
+        grid-template-areas:
+            "mes--anterior mes--ano mes--ano mes--ano mes--ano mes--ano mes--posterior"         
+            "cab--domingo cab--segunda cab--terca cab--quarta cab--quinta cab--sexta cab--sabado"
+            "domingo--0 segunda--0 terca--0 quarta--0 quinta--0 sexta--0 sabado--0"
+            "domingo--1 segunda--1 terca--1 quarta--1 quinta--1 sexta--1 sabado--1"
+            "domingo--2 segunda--2 terca--2 quarta--2 quinta--2 sexta--2 sabado--2"
+            "domingo--3 segunda--3 terca--3 quarta--3 quinta--3 sexta--3 sabado--3"
+            "domingo--4 segunda--4 terca--4 quarta--4 quinta--4 sexta--4 sabado--4"
+            "domingo--5 segunda--5 terca--5 quarta--5 quinta--5 sexta--5 sabado--5";
+        grid-row-gap: 2px;
+        .flex {
+            display: flex;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .align-center {
+            align-self: center;
+        }
+        .selecionado {
+            color: white;
+            &--primeiro {
+                border-top-left-radius: 50%;
+                border-bottom-left-radius: 50%;
+                background: #0286D9;
+                box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+            }
+            &--segundo {
+                border-top-right-radius: 50%;
+                border-bottom-right-radius: 50%;
+                background: #0286D9;
+                box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+            }
+            &--unico {
+                background: #0286D9;
+                border-radius: 50%; 
+                box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+            }
+        }
+        .pointer {
+            cursor: pointer;
+        }
+        .periodo {
+            background-color: #CFDCEB;
+        }
+        .fora-periodo {
+            color: #A4B3B7;
+        }
+        .margin-left-4 {
+            margin-left: 4%;
+        }
+        .mes {         
+            &--anterior {
+                grid-area: mes--anterior;
+            }
+            &--posterior {
+                grid-area: mes--posterior;
+            }
+            &--ano {
+                grid-area: mes--ano;
+            }
+        }
+
+        .cab {
+            color: #0286D9;
+            &--domingo {
+                grid-area: "cab--domingo";
+            }
+            &--segunda {
+                grid-area: "cab--segunda";
+            }
+            &--terca {
+                grid-area: "cab--terca";
+            }
+            &--quarta {
+                grid-area: "cab--quarta";
+            }
+            &--quinta {
+                grid-area: "cab--quinta";
+            }
+            &--sexta {
+                grid-area: "cab--sexta";
+            }
+            &--sabado {
+                grid-area: "cab--sabado";
+            }
+        }
+
+        .domingo {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "domingo--"+#{$i});
+                }
+            }
+        }
+
+        .segunda {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "segunda--"+#{$i});
+                }
+            }
+        }
+
+        .terca {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "terca--"+#{$i});
+                }
+            }
+        }
+
+        .quarta {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "quarta--"+#{$i});
+                }
+            }
+        }
+
+        .quinta {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "quinta--"+#{$i});
+                }
+            }
+        }
+
+        .sexta {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "sexta--"+#{$i});
+                }
+            }
+        }
+
+        .sabado {
+            @for $i from 0 through 5 {
+                &--#{$i} {
+                    grid-area: unquote($string: "sabado--"+#{$i});
+                }
+            }
+        }
+    }
+}

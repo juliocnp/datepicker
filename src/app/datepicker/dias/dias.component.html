@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="datepicker">
+        <div class="flex justify-center align-center pointer mes--anterior" (click)="mesAnterior()">
+            <span><</span>
+        </div>
+        <div class="flex justify-center align-center mes--ano">
+            <span>{{mesNome | uppercase}}</span>
+            <span class="margin-left-4">{{ano}}</span>
+        </div>
+        <div class="flex justify-center align-center pointer mes--posterior" (click)="mesPosterior()">
+            <span>></span>
+        </div>
+        <ng-container *ngFor="let cabecalho of cabecalhoSemana; let i = index">
+            <div class="flex justify-center cab {{'cab--' + semana[i]}}">
+                <div class="align-center">{{cabecalho}}</div>
+            </div>
+        </ng-container>
+        <ng-container *ngFor="let row of dias; let j = index;">
+            <ng-container *ngFor="let dia of row; let i = index;">
+                <div (click)="diaClique(dia)"
+                    class="flex justify-center pointer {{semana[i] + '--' + j}}" 
+                    [ngClass]="{'periodo': dia && dia.periodo,
+                    'selecionado': dia && dia.selecionado,
+                    'selecionado--unico': dia && dia.selecionado && diaUnicoSelecionado && dia.data.valueOf() === diaUnicoSelecionado.valueOf(),
+                    'selecionado--primeiro': dia && dia.selecionado && dia1Selecionado && dia.data.valueOf() === dia1Selecionado.valueOf(),
+                    'selecionado--segundo': dia && dia.selecionado && dia2Selecionado && dia.data.valueOf() === dia2Selecionado.valueOf(),
+                    'fora-periodo': dia && dia.foraPeriodo }">
+                    <div class="align-center">{{dia ? dia.diaString: ''}}</div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
