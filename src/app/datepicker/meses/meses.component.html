@@ -1,1 +1,18 @@
-<span>meses works!</span>
+<div class="container">
+    <div class="mespicker">
+        <div class="flex justify-center align-center pointer ano ano--anterior" (click)="anoAnterior()">
+            <img src="../../../assets/images/chevron-left.svg" class="svg"/>
+        </div>
+        <div class="flex justify-center align-center ano">
+            <span class="margin-left-4 pointer" (click)="selecaoAno()">{{anoSelecionado}}</span>
+        </div>
+        <div class="flex justify-center align-center pointer ano ano--posterior" (click)="anoPosterior()">
+            <img src="../../../assets/images/chevron-right.svg" class="svg"/>
+        </div>
+        <ng-container *ngFor="let mes of meses; let i = index">
+            <div class="flex justify-center mes {{'mes--' + mes[i]}}">
+                <div class="align-center">cole zé</div>
+            </div>
+        </ng-container>
+    </div>
+</div>

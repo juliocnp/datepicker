@@ -1,0 +1,55 @@
+.container {
+    $background-color: white;
+    $text-color: #4A4A4A;
+    $selected-text-color: white;
+    $unselected-text-color: #A4B3B7;
+    $period-color: #CFDCEB;
+    $primary-color: #0286D9;
+    .mespicker {
+        height: 100%;
+        width: 100%;
+        color:  $text-color;
+        font-family: Arial;
+        font-size: 14px;
+        font-weight: 300;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 2fr repeat(4, 4fr);
+        grid-template-areas:
+            "ano--anterior ano ano--posterior"         
+            "mes--1 mes--2 mes--3"
+            "mes--4 mes--5 mes--6"
+            "mes--7 mes--8 mes--9"
+            "mes--10 mes--11 mes--12";
+        .mes {
+            @for $i from 1 through 12 {
+                &--#{$i} {
+                    grid-area: unquote($string: "mes--"+#{$i});
+                }
+            }
+        }
+        .flex {
+            display: flex;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .align-center {
+            align-self: center;
+        }
+        .pointer {
+            cursor: pointer;
+        }
+        .ano {  
+            &--anterior {
+                grid-area: ano--anterior;
+            }
+            &--posterior {
+                grid-area: ano--posterior;
+            }
+            .svg {
+                height: 20px;
+            }
+        }
+    }
+}
