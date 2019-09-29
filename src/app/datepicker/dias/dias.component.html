@@ -1,14 +1,14 @@
 <div class="container">
     <div class="datepicker">
-        <div class="flex justify-center align-center pointer mes--anterior" (click)="mesAnterior()">
-            <span><</span>
+        <div class="flex justify-center align-center pointer mes mes--anterior" (click)="mesAnterior()">
+            <img src="../../../assets/images/chevron-left.svg" class="svg"/>
         </div>
-        <div class="flex justify-center align-center mes--ano">
-            <span>{{mesNome | uppercase}}</span>
-            <span class="margin-left-4">{{ano}}</span>
+        <div class="flex justify-center align-center ano">
+            <span (click)="selecaoMes()">{{mesNome | uppercase}}</span>
+            <span class="margin-left-4" (click)="selecaoAno()">{{anoSelecionado}}</span>
         </div>
-        <div class="flex justify-center align-center pointer mes--posterior" (click)="mesPosterior()">
-            <span>></span>
+        <div class="flex justify-center align-center pointer mes mes--posterior" (click)="mesPosterior()">
+            <img src="../../../assets/images/chevron-right.svg" class="svg"/>
         </div>
         <ng-container *ngFor="let cabecalho of cabecalhoSemana; let i = index">
             <div class="flex justify-center cab {{'cab--' + semana[i]}}">
@@ -24,7 +24,9 @@
                     'selecionado--unico': dia && dia.selecionado && diaUnicoSelecionado && dia.data.valueOf() === diaUnicoSelecionado.valueOf(),
                     'selecionado--primeiro': dia && dia.selecionado && dia1Selecionado && dia.data.valueOf() === dia1Selecionado.valueOf(),
                     'selecionado--segundo': dia && dia.selecionado && dia2Selecionado && dia.data.valueOf() === dia2Selecionado.valueOf(),
-                    'fora-periodo': dia && dia.foraPeriodo }">
+                    'fora-periodo': dia && dia.foraPeriodo,
+                    'dia-atual': dia && dia.marcadorDiaAtual,
+                    'dia-desativado': dia && dia.desativado }">
                     <div class="align-center">{{dia ? dia.diaString: ''}}</div>
                 </div>
             </ng-container>

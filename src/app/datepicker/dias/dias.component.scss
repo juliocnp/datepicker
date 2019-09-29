@@ -1,12 +1,20 @@
 .container {
+    $background-color: white;
+    $text-color: #4A4A4A;
+    $selected-text-color: white;
+    $unselected-text-color: #A4B3B7;
+    $period-color: #CFDCEB;
+    $primary-color: #0286D9;
+
     font-family: Avenir;
     font-weight: 300;
     height: 100vh;
     width: 100vw;
+    background-color: $background-color;
     .datepicker {
         height: 100%;
         width: 100%;
-        color: #4A4A4A;
+        color:  $text-color;
         font-family: Arial;
         font-size: 14px;
         font-weight: 300;
@@ -14,7 +22,7 @@
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: 2fr repeat(7, 1fr);
         grid-template-areas:
-            "mes--anterior mes--ano mes--ano mes--ano mes--ano mes--ano mes--posterior"         
+            "mes--anterior ano ano ano ano ano mes--posterior"         
             "cab--domingo cab--segunda cab--terca cab--quarta cab--quinta cab--sexta cab--sabado"
             "domingo--0 segunda--0 terca--0 quarta--0 quinta--0 sexta--0 sabado--0"
             "domingo--1 segunda--1 terca--1 quarta--1 quinta--1 sexta--1 sabado--1"
@@ -33,51 +41,61 @@
             align-self: center;
         }
         .selecionado {
-            color: white;
+            color: $selected-text-color;
+            background: $primary-color;
             &--primeiro {
                 border-top-left-radius: 50%;
                 border-bottom-left-radius: 50%;
-                background: #0286D9;
                 box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
             }
             &--segundo {
                 border-top-right-radius: 50%;
                 border-bottom-right-radius: 50%;
-                background: #0286D9;
                 box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
             }
             &--unico {
-                background: #0286D9;
                 border-radius: 50%; 
                 box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
             }
+        }
+        .dia-atual {
+            border: 2px solid #4A4A4A;
+            border-radius: 50%;
         }
         .pointer {
             cursor: pointer;
         }
         .periodo {
-            background-color: #CFDCEB;
+            background-color: $period-color;
         }
         .fora-periodo {
-            color: #A4B3B7;
+            color: $unselected-text-color;
+        }
+        .dia-desativado {
+            color: $unselected-text-color;
+            pointer-events: none;
         }
         .margin-left-4 {
             margin-left: 4%;
         }
-        .mes {         
+        .mes {  
             &--anterior {
                 grid-area: mes--anterior;
             }
             &--posterior {
                 grid-area: mes--posterior;
             }
-            &--ano {
-                grid-area: mes--ano;
+            .svg {
+                height: 20px;     
+                fill: red;
             }
         }
-
+        
+        .ano {
+            grid-area: ano;
+        }
         .cab {
-            color: #0286D9;
+            color: $primary-color;
             &--domingo {
                 grid-area: "cab--domingo";
             }

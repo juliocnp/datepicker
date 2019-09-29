@@ -14,8 +14,8 @@ export class DiasComponent implements OnInit {
   cabecalhoSemana: string[];
   semana = Semana;
   mesNome: string;
-  ano: number;
-  mes: number;
+  anoSelecionado: number;
+  mesSelecionado: number;
   mesAtual: Date;
   dia1Selecionado: Date;
   dia2Selecionado: Date;
@@ -25,6 +25,10 @@ export class DiasComponent implements OnInit {
   @Output() data2: EventEmitter<Date>;
 
   @Input() dataUnica: boolean = false;
+  @Input() dataLimite1: Date;
+  @Input() dataLimite2: Date;
+  @Input() primaryColor: string;
+  @Input() secondaryColor: string;
 
   constructor() {
     this.data1 = new EventEmitter<Date>();
@@ -32,6 +36,12 @@ export class DiasComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.dataLimite1) {
+      this.dataLimite1.setHours(0, 0, 0, 0);
+    }
+    if (this.dataLimite2) {
+      this.dataLimite2.setHours(0, 0, 0, 0);
+    }
     this.mesAtual = new Date();
     this.montarCabecalhoSemana();
     this.montarMes(this.mesAtual);
@@ -44,8 +54,8 @@ export class DiasComponent implements OnInit {
   montarMes(mesSelecionado: Date) {
     this.dias = new Array<Array<DiaSemana>>();
     this.mesNome = Mes[mesSelecionado.getMonth() + 1];
-    this.mes = mesSelecionado.getMonth() + 1;
-    this.ano = mesSelecionado.getFullYear();
+    this.mesSelecionado = mesSelecionado.getMonth() + 1;
+    this.anoSelecionado = mesSelecionado.getFullYear();
     const diaAux = new Date(this.copyObject(mesSelecionado));
     diaAux.setDate(1);
     diaAux.setHours(0, 0, 0, 0);
@@ -58,9 +68,12 @@ export class DiasComponent implements OnInit {
         if (j === 0 && i < diaSemanaInicio) {
           semana.push(null);
         } else {
-          semana.push(new DiaSemana(diaAux.getDate().toString(), new Date(this.copyObject(diaAux))));
+          const diaSemana = new DiaSemana(diaAux.getDate().toString(), new Date(this.copyObject(diaAux)));
+          diaSemana.desativado = (this.dataLimite1 && diaSemana.data.getTime() < this.dataLimite1.getTime() || 
+          this.dataLimite2 && diaSemana.data.getTime() > this.dataLimite2.getTime()) ? true : false;
+          semana.push(diaSemana);
           diaAux.setDate(diaAux.getDate() + 1);
-          mesAcabado = (Mes[this.mes] === Mes[diaAux.getMonth() + 1]) ? false : true;
+          mesAcabado = (Mes[this.mesSelecionado] === Mes[diaAux.getMonth() + 1]) ? false : true;
           if (mesAcabado)
             break;
         }
@@ -94,6 +107,7 @@ export class DiasComponent implements OnInit {
       this.zerarDatas();
       this.montarMes(this.mesAtual);
     }
+    this.RemoverMarcadorDiaAtual();
   }
 
   private selecionarDataUnica(dia: DiaSemana) {
@@ -162,13 +176,35 @@ export class DiasComponent implements OnInit {
             diaAux.periodo = true;
           } else if (diaAux) {
             diaAux.foraPeriodo = true;
+            diaAux.marcadorDiaAtual = false;
           }
         });
       });
     }
   }
 
+  private RemoverMarcadorDiaAtual() {
+    this.dias.forEach(semana => {
+      semana.forEach(diaAux => {
+        if (diaAux && diaAux.diaAtual && (this.dia1Selecionado || this.dia2Selecionado || this.diaUnicoSelecionado)) {
+          diaAux.marcadorDiaAtual = false;
+        }
+        else if (diaAux && diaAux.diaAtual) {
+          diaAux.marcadorDiaAtual = true;
+        }
+      })
+    })
+  }
+
   copyObject(item: any) {
     return JSON.parse(JSON.stringify(item));
+  }
+
+  selecaoMes() {
+
+  }
+  
+  selecaoAno() {
+
   }
 }
