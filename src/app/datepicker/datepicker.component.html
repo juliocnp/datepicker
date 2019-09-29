@@ -1,1 +1,4 @@
-<app-dias [dataUnica]="false" (data1)="tratarData1($event)" (data2)="tratarData2($event)"></app-dias>
+<app-dias *ngIf="selecao === 'dia'" [dataUnica]="false" (data1)="tratarData1($event)"
+    (data2)="tratarData2($event)" (selecao)="tratarSelecao($event)"></app-dias>
+<app-meses *ngIf="selecao === 'mes'"></app-meses>
+<app-anos *ngIf="selecao === 'ano'"></app-anos>

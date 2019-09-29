@@ -16,24 +16,23 @@ export class DiasComponent implements OnInit {
   mesNome: string;
   anoSelecionado: number;
   mesSelecionado: number;
-  mesAtual: Date;
   dia1Selecionado: Date;
   dia2Selecionado: Date;
   diaUnicoSelecionado: Date;
 
-  @Output() data1: EventEmitter<Date>;
-  @Output() data2: EventEmitter<Date>;
+  @Output() data1 = new EventEmitter<Date>();
+  @Output() data2 = new EventEmitter<Date>();
+
+  @Output() selecao = new EventEmitter<string>();
 
   @Input() dataUnica: boolean = false;
+  @Input() mesAtual: Date = new Date();
   @Input() dataLimite1: Date;
   @Input() dataLimite2: Date;
   @Input() primaryColor: string;
   @Input() secondaryColor: string;
 
-  constructor() {
-    this.data1 = new EventEmitter<Date>();
-    this.data2 = new EventEmitter<Date>();
-  }
+  constructor() { }
 
   ngOnInit() {
     if (this.dataLimite1) {
@@ -46,7 +45,7 @@ export class DiasComponent implements OnInit {
     this.montarCabecalhoSemana();
     this.montarMes(this.mesAtual);
   }
-
+  
   montarCabecalhoSemana() {
     this.cabecalhoSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
   }
@@ -97,8 +96,8 @@ export class DiasComponent implements OnInit {
 
   diaClique(dia: DiaSemana) {
     if (!this.diaUnicoSelecionado && !this.dia1Selecionado) {
-      this.selecionarDia1(dia);
-    } else if (!this.dia2Selecionado && !this.dataUnica) {
+      this.selecionarDiaUnico(dia);
+    } else if (!this.dia2Selecionado && !this.dataUnica && this.diaUnicoSelecionado.getTime() !== dia.data.getTime()) {
       this.selecionarDia1eDia2(dia);
       this.PreencherPeriodo();
     } else if (this.dataUnica && this.diaUnicoSelecionado) {
@@ -148,7 +147,7 @@ export class DiasComponent implements OnInit {
     this.data2.emit(new Date(this.copyObject(this.dia2Selecionado)));
   }
 
-  private selecionarDia1(dia: DiaSemana) {
+  private selecionarDiaUnico(dia: DiaSemana) {
     dia.selecionado = true;
     this.diaUnicoSelecionado = new Date(this.copyObject(dia.data));
     this.data1.emit(new Date(this.copyObject(this.diaUnicoSelecionado)));
@@ -201,10 +200,10 @@ export class DiasComponent implements OnInit {
   }
 
   selecaoMes() {
-
+    this.selecao.emit('mes');
   }
   
   selecaoAno() {
-
+    this.selecao.emit('ano');
   }
 }

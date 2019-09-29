@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatepickerComponent implements OnInit {
 
+  selecao = 'dia';
+
   constructor() { }
   ngOnInit() { }
 
@@ -20,5 +22,9 @@ export class DatepickerComponent implements OnInit {
     if (data) {
       console.log("Data 2: " + data.toDateString());
     }
+  }
+
+  tratarSelecao(selecao: string) {
+    this.selecao = selecao;
   }
 }

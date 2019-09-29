@@ -4,8 +4,8 @@
             <img src="../../../assets/images/chevron-left.svg" class="svg"/>
         </div>
         <div class="flex justify-center align-center ano">
-            <span (click)="selecaoMes()">{{mesNome | uppercase}}</span>
-            <span class="margin-left-4" (click)="selecaoAno()">{{anoSelecionado}}</span>
+            <span (click)="selecaoMes()" class="pointer">{{mesNome | uppercase}}</span>
+            <span class="margin-left-4 pointer" (click)="selecaoAno()">{{anoSelecionado}}</span>
         </div>
         <div class="flex justify-center align-center pointer mes mes--posterior" (click)="mesPosterior()">
             <img src="../../../assets/images/chevron-right.svg" class="svg"/>
@@ -18,7 +18,7 @@
         <ng-container *ngFor="let row of dias; let j = index;">
             <ng-container *ngFor="let dia of row; let i = index;">
                 <div (click)="diaClique(dia)"
-                    class="flex justify-center pointer {{semana[i] + '--' + j}}" 
+                    class="flex justify-center pointer dia-hover {{semana[i] + '--' + j}}" 
                     [ngClass]="{'periodo': dia && dia.periodo,
                     'selecionado': dia && dia.selecionado,
                     'selecionado--unico': dia && dia.selecionado && diaUnicoSelecionado && dia.data.valueOf() === diaUnicoSelecionado.valueOf(),
